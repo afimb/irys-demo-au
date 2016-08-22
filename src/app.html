@@ -1,0 +1,18 @@
+<template>
+  <require from="./nav-bar.html"></require>
+  <require from="./footer-view"></require>
+  <require from="./modal-data.html"></require>
+  <require from="bootstrap/css/bootstrap.min.css"></require>
+  <require from="sass/layout.css"></require>
+
+  <nav-bar router.bind="router"></nav-bar>
+
+  <loading-indicator loading.bind="router.isNavigating"></loading-indicator>
+  
+  <div class="container">
+    <router-view></router-view>
+  </div>
+
+  <footer-view></footer-view>
+  <modal-data></modal-data>
+</template>

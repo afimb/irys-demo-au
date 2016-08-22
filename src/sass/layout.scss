@@ -1,0 +1,28 @@
+body {
+  padding-top: 50px;
+}
+.id-description {
+  text-align: center;
+  padding: 4px 0;
+}
+footer {
+  margin-top: 45px;
+  padding: 20px;
+  background-color: #222;
+  color: #777;
+  font-size: 12px;
+  min-height: 200px;
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    list-style: none;
+  }
+  h4 {
+    color: #777;
+  }
+  a {
+    color: #FFF;
+  }
+}
