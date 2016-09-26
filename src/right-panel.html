@@ -1,0 +1,399 @@
+<template>
+  <div class="right-panel-wrapper" id="right-panel-wrapper">
+    <div id="forms-wrapper">
+      <button class="pannel-trigger" click.delegate="togglePanel()">
+        <span class="glyphicon glyphicon-option-vertical"></span>
+      </button>
+
+      <div id="stop-monitoring-form-wrapper" class="i-m-there">
+        <div class="right-app-panel">
+          <div class="backlinking">
+            <div class="pull-right">
+              <a href="#stop-monitoring-xml-form-wrapper"
+                class="badge badge-white"> <span>Requête XML</span>
+              </a>
+            </div>
+          </div>
+
+          <form class="form-horizontal" id="stop-monitoring-form" submit.delegate="stopMonitoring()">
+            <fieldset>
+              <legend>Construire votre requête Stop Monitoring</legend>
+              <div class="form-group">
+                <label for="stopName" class="col-lg-4 control-label">Nom
+                  arrêt</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="stopName"
+                    placeholder="Nom de l'arrêt ou id">
+                  <p>Utilise les données d'autocompletion issues du service
+                    stop discovery</p>
+                  <a href="#" class="reset-stop-id">Remettre à zéro</a>
+                </div>
+              </div>
+              <div class="form-group hidden">
+                <label for="stopId" class="col-lg-4 control-label">StopId</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="stopId"
+                    placeholder="Nom de l'arrêt ou id">
+                </div>
+              </div>
+              <!--  [DSU] -->
+              <div class="form-group siri_24">
+                <label for="destinationName" class="col-lg-4 control-label">Destination</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="destinationName"
+                    placeholder="Nom de l'arrêt ou id">
+                  <p>Utilise les données d'autocompletion issues du service
+                    stop discovery</p>
+                  <a href="#" class="reset-destination-id">Remettre à zéro</a>
+                </div>
+              </div>
+              <div class="form-group hidden">
+                <label for="destinationId" class="col-lg-4 control-label">DestinationId</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="destinationId"
+                    placeholder="Nom de l'arrêt ou id">
+                </div>
+              </div>
+              <!--  [DSU] -->
+              <div class="form-group">
+                <label for="lineName" class="col-lg-4 control-label">Nom
+                  de la ligne</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="lineName"
+                    placeholder="id de la ligne">
+                  <p>Utilise les données d'autocompletion issues du service
+                    line discovery</p>
+                  <a href="#" class="reset-line-id">Remettre à zéro</a>
+                </div>
+              </div>
+              <div class="form-group hidden">
+                <label for="lineId" class="col-lg-4 control-label">LineId</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="lineId"
+                    placeholder="id de la ligne">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="start" class="col-lg-4 control-label">Heure</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="start"
+                    placeholder="Heure de départ (HH:MM)">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="typeVisit" class="col-lg-4 control-label">Type
+                  d'arrêt</label>
+                <div class="col-lg-8">
+                  <select class="form-control" id="typeVisit">
+                    <option value="arrivals">Arrivées</option>
+                    <option value="departures">Départs</option>
+                    <option value="all">Tous</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="preview" class="col-lg-4 control-label">Intervalle
+                  temporel (mn)</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="preview"
+                    list="time-span-list" placeholder="Intervalle temporel">
+                  <datalist id="time-span-list">
+                    <option>0</option>
+                    <option>30</option>
+                    <option>60</option>
+                    <option>90</option>
+                    <option>120</option>
+                    <option>150</option>
+                    <option>180</option>
+                  </datalist>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="maxStop" class="col-lg-4 control-label">Limite
+                  de passages</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="maxStop"
+                    list="max-stop-list" placeholder="Nombre maxi d'arrets">
+                  <datalist id="max-stop-list">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                  </datalist>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="minStLine" class="col-lg-4 control-label">Minimum
+                  d'arrêts par ligne</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="minStLine"
+                    list="minStLine-list"
+                    placeholder="Nombre d'arrets mini par ligne">
+                  <datalist id="minStLine-list">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </datalist>
+                </div>
+              </div>
+              <!--  [DSU] -->
+              <div class="form-group siri_24">
+                <label for="minimumStopVisitPerLineVia"
+                  class="col-lg-4 control-label">Minimum de passages
+                  par itinéraire</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control"
+                    id="minimumStopVisitPerLineVia"
+                    placeholder="Minimum de passages par itinéraire">
+                </div>
+              </div>
+              <!--  [DSU] -->
+              <div class="form-group">
+                <label for="onward" class="col-lg-4 control-label">Arrêts
+                  suivants</label>
+                <div class="col-lg-4">
+                  <input type="text" class="form-control" id="onward"
+                    list="time-span-list" placeholder="nbs">
+                  <datalist id="time-span-list">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </datalist>
+                </div>
+                <p class="col-lg-4">passages suivants
+              </div>
+              <div class="form-group">
+                <div class="alert-wrapper"></div>
+                <div class="text-right">
+                  <button type="submit" class="btn btn-success">Envoyer
+                    la requête</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+      <div id="get-general-message-form-wrapper">
+        <div class="right-app-panel">
+          <form class="form-horizontal" id="canned-requests" submit.delegate="generalMessage()">
+            <legend class=""> Construire votre requête General
+              Message</legend>
+            <fieldset>
+              <div class="form-group">
+                <label for="stopName" class="col-lg-4 control-label">Nom
+                  arrêt</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="stopName"
+                    placeholder="Nom de l'arrêt ou id">
+                  <p>Utilise les données d'autocompletion issues du service
+                    stop discovery</p>
+                  <a href="#" class="reset-stop-id">Remettre à zéro</a>
+                </div>
+              </div>
+
+              <div class="form-group hidden">
+                <label for="stopId" class="col-lg-4 control-label">StopId</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="stopId"
+                    placeholder="Nom de l'arrêt ou id">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lineName" class="col-lg-4 control-label">Nom
+                  de la ligne</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="lineName"
+                    placeholder="Nom de la ligne">
+                  <p>Utilise les données d'autocompletion issues du service
+                    line discovery</p>
+                  <a href="#" class="reset-line-id">Remettre à zéro</a>
+                </div>
+              </div>
+              <div class="form-group hidden">
+                <label for="lineId" class="col-lg-4 control-label">LineId</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" id="lineId"
+                    placeholder="id de la ligne">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="perturbationType" class="col-lg-4 control-label">Type
+                  de perturbation</label>
+                <div class="col-lg-8">
+                  <select class="form-control" id="perturbationType">
+                    <option value="">Tous</option>
+                    <option value="Perturbation">Perturbation</option>
+                    <option value="Information">Information</option>
+                    <option value="Commercial">Commercial</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="alert-wrapper"></div>
+                <div class="col-xs-4">
+                  <button type="submit" class="btn btn-warning"
+                    id="get-general-message">Get General Message</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+      <div id="service-discovery-form-wrapper">
+        <div class="right-app-panel">
+          <form class="form-horizontal" id="canned-requests">
+            <legend class=""> Construire votre requête Stop
+              Discovery ou Line Discovery</legend>
+            <fieldset>
+              <div class="form-group">
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-primary"
+                    id="stop-discovery-button" click.delegate="stopDiscovery()">Stop Discovery</button>
+                </div>
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-info"
+                    id="line-discovery-button" click.delegate="lineDiscovery()">Line Discovery</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <div id="check-status-form-wrapper">
+        <div class="right-app-panel">
+          <form class="form-horizontal" id="check-status" submit.delegate="checkStatus()">
+            <legend class=""> Construire votre requête Check Status</legend>
+            <fieldset>
+              <div class="form-group">
+                <div class="col-xs-4">
+                  <button type="button" class="btn btn-primary"
+                    id="check-status-button" click.delegate="checkStatus()">Check Status</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+
+
+
+<!--       <div id="stop-monitoring-xml-form-wrapper">
+        <div class="right-app-panel">
+          <div class="backlinking">
+            <div class="pull-left">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <button click.delegate="goBack()">
+                <span>Retourner au formulaire</span>
+              </button>
+            </div>
+          </div>
+
+          <form class="form-horizontal xml-validation-form"
+            id="smart-request-form" submit.delegate="smartRequest()">
+            <legend>Requête XML</legend>
+            <div class="form-group">
+              <textarea class="form-control xml-paste-zone"
+                id="xml-request-textarea"
+                placeholder="Copier votre requête xml"></textarea>
+            </div>
+            <div class="form-group">
+              <div class="text-right">
+                <button type="submit" class="btn btn-success"
+                  id="smart-request-submit">Envoyer la requête</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div> -->
+    </div>
+
+
+    <div id="response-wrapper">
+      <div id="response-panel-wrapper">
+        <div class="right-app-panel">
+          <div id="response">
+            <div class="backlinking">
+              <div class="pull-left">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <button id="backlink-form-from-response" class="btn btn-default btn-xs" click.delegate="goBack()">
+                  <span>Retourner au formulaire</span>
+                </button>
+              </div>
+
+              <div class="pull-right">
+                <button class="badge badge-white" click.delegate="vueView('xml-')">Vue xml</button>
+              </div>
+              <div class="pull-right fancy-view">
+                <button class="badge badge-white" click.delegate="vueView('fancy-')">Vue synthetique</button>
+              </div>
+            </div>
+
+            <h4 class="response-counter"></h4>
+            <h4 class="siri-version-display"></h4>
+            <div id="check-status-response-wrapper"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="fancy-response-panel-wrapper">
+        <div class="right-app-panel">
+          <div class="backlinking">
+            <div class="pull-left">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <button id="fancy-backlink-form-from-response" class="btn btn-default btn-xs" click.delegate="goBack()">
+                <span>Retourner au formulaire</span>
+              </button>
+            </div>
+            <div class="pull-right">
+              <button class="badge badge-white" click.delegate="vueView('xml-')">Vue xml</button>
+            </div>
+            <div class="pull-right">
+              <button class="badge badge-white" click.delegate="vueView('')">Vue complète</button>
+            </div>
+          </div>
+          <div id="fancy-response">
+            <h4 class="response-counter"></h4>
+            <h4 class="siri-version-display"></h4>
+            <ul class="fancy-wrapper" id="fancy-wrapper"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="xml-response-panel-wrapper">
+        <div class="right-app-panel">
+          <div class="backlinking">
+            <div class="pull-left">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <button id="xml-backlink-form-from-response" class="btn btn-default btn-xs" click.delegate="goBack()">
+                <span>Retourner au formulaire</span>
+              </button>
+            </div>
+
+            <div class="pull-right">
+              <button class="badge badge-white" click.delegate="vueView('')">Vue complète</button>
+            </div>
+            <div class="pull-right fancy-view">
+              <button class="badge badge-white" click.delegate="vueView('fancy-')">Vue synthetique</button>
+            </div>
+          </div>
+          <div id="xml-response">
+            <div>
+              <textarea rows="20" cols="40" id="xml-response-wrapper"
+                class="col-xs-12"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

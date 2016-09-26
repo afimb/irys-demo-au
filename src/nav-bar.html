@@ -17,7 +17,19 @@
       <div class="collapse navbar-collapse" id="skeleton-navigation-navbar-collapse">
         <ul class="nav navbar-nav">
           <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
-            <a data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse.in" href.bind="row.href">${row.title}</a>
+            <a data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse.in" href.bind="row.href" click.delegate="closePanel()">${row.title}</a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right navbar-siri-profile">
+          <li>
+            <form id="form-siri-profile">
+              <label for="siri-profile">SIRI Profile</label>
+              <select id="siri-profile" value.bind="siriProfile">
+                <option data-version="1.3" data-requestor="Siri-client" data-value="http://appli.chouette.mobi/siri/irys_server">2.2</option>
+                <option id="siri-server-value" data-version="2.0:FR-IDF-2.4" data-requestor="NINOXE:default" data-value="http://appli.chouette.mobi/siri_france/siri">2.4</option>
+              </select>
+            </form>
           </li>
         </ul>
 

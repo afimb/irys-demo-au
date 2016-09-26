@@ -26,3 +26,13 @@ footer {
     color: #FFF;
   }
 }
+button.badge {
+  cursor: pointer;
+  border: none;
+}
+.navbar-siri-profile > li {
+  padding-top: 15px;
+}
+
+@import 'main';
+@import 'stop-results';

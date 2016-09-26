@@ -1,3 +1,56 @@
 <template>
-  <h1>Test</h1>
+  <div id='siri-description' class="i-m-there">
+    <div class="app-wrapper">
+      <div class="text-wrapper">
+        <div class="explaination-text container">
+          <div class="row">
+            <div class="col-sm-12">
+              <h2 class="text-center mb-lg">Démonstrateur Siri</h2>
+              <p>
+                Depuis votre navigateur WEB, vous pouvez interroger des
+                serveurs SIRI qui implémentent les services Discovery, Check
+                Status, Stop Monitoring, General Message selon les profils
+                STIF 2.2 ou 2.4, en mode requête/réponse. Le site s'appuie
+                sur des logiciels libres : <a
+                  href="https://github.com/afimb/irys-demo">un client
+                  html/js</a>, un <a href="https://github.com/afimb/irys-chouette">
+                  serveur IRYS</a> qui fournit l'offre temps réel de transport à
+                partir de données de simulation.
+              </p>
+
+              <p>
+                D'autres services seront implémentés dans de prochaines
+                versions. D'autres travaux sont aussi <a
+                  href="http://www.chouette.mobi/irys/pourquoi-irys-2/feuille-de-route/">en
+                  cours autour de SIRI</a> : contactez nous pour toute question,
+                merci !
+              </p>
+              <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                  <p class="mt-lg text-center">
+                    <a class="btn btn-danger btn-lg" route-href="route: stopMonitoring"
+                      id="first-SM-request"> Faire une requête Stop
+                      Monitoring</a>
+                  </p>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                  <p class="mt-lg text-center">
+                    <a class="btn btn-warning btn-lg" route-href="route: generalMessage"
+                       id="/services/first-GM-request">
+                      Faire une requête General Message</a>
+                  </p>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                  <p class="mt-lg text-center">
+                    <a class="btn btn-success btn-lg" route-href="route: discovery"
+                       id="first-SD-request"> Faire une requête Service
+                      Discovery</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>

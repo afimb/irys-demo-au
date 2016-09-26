@@ -89,6 +89,10 @@
         "name": "vendor-bundle.js",
         "prepend": [
           "node_modules/bluebird/js/browser/bluebird.core.js",
+          "node_modules/mustache/mustache.min.js",
+          "node_modules/codemirror/lib/codemirror.js",
+          "node_modules/jquery/dist/jquery.min.js",
+          "scripts/app/jquery-ui.js",
           "scripts/require.js"
         ],
         "dependencies": [
@@ -113,23 +117,12 @@
           "aurelia-task-queue",
           "aurelia-templating",
           "aurelia-templating-binding",
-          "jquery",
           {
             "name": "nprogress",
             "path": "../node_modules/nprogress",
             "main": "nprogress",
             "resources": [
               "nprogress.css"
-            ]
-          },
-          {
-            "name": "bootstrap",
-            "path": "../node_modules/bootstrap/dist",
-            "main": "js/bootstrap.min",
-            "deps": ["jquery"],
-            "exports": "$",
-            "resources": [
-              "css/bootstrap.min.css"
             ]
           },
           {
