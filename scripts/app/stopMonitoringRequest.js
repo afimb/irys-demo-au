@@ -296,7 +296,7 @@
     stopMonitoringRequest.prototype.renderXML = function(response) {
       var xmlText;
       xmlText = new XMLSerializer().serializeToString(response);
-      return $('#xml-response-wrapper').val(xmlText);
+      return $('#xml-response-wrapper').val(this.formatXml(xmlText));
     };
 
     stopMonitoringRequest.prototype.renderNodesLength = function(l) {
@@ -319,8 +319,8 @@
 
     stopMonitoringRequest.prototype.sendRequest = function(xmlRequest, responseHandler, handler, responseWrapper) {
       var errorHandler, serverUrl;
-      var serverUrl = $("#siri-server-value").attr('data-value');
-      console.log(serverUrl);
+      var siri_profile = JSON.parse(localStorage.getItem('siri-' + localStorage.getItem('siri-profile')));
+      var serverUrl = siri_profile.value;
       if (responseWrapper) {
         errorHandler = responseWrapper.find('.alert-wrapper');
         errorHandler.empty();
@@ -353,6 +353,37 @@
         return console.log('epic fail');
       });
     };
+
+    stopMonitoringRequest.prototype.formatXml = function(xml) {
+      var formatted = '';
+      var reg = /(>)(<)(\/*)/g;
+      xml = xml.replace(reg, '$1\r\n$2$3');
+      var pad = 0;
+      jQuery.each(xml.split('\r\n'), function(index, node) {
+          var indent = 0;
+          if (node.match( /.+<\/\w[^>]*>$/ )) {
+              indent = 0;
+          } else if (node.match( /^<\/\w/ )) {
+              if (pad != 0) {
+                  pad -= 2;
+              }
+          } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+              indent = 2;
+          } else {
+              indent = 0;
+          }
+
+          var padding = '';
+          for (var i = 0; i < pad; i++) {
+              padding += '  ';
+          }
+
+          formatted += padding + node + '\r\n';
+          pad += indent;
+      });
+
+      return formatted;
+    }
 
     return stopMonitoringRequest;
 

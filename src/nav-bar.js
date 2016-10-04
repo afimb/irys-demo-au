@@ -7,10 +7,11 @@ export class NavBar {
 
 
   siriProfileChanged(newVal) {
-    if(newVal == '2.2')
+    if(newVal == '2.2') {
       $(".siri_24").hide();
-    else
+    } else {
       $(".siri_24").show();
+    }
     window.localStorage.setItem('siri-profile', newVal);
   }
 

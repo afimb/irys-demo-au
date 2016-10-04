@@ -1,5 +1,5 @@
 export class Home {
-  constructor() {
+  attached() {
     $('.right-panel-wrapper').hide();
   }
 }

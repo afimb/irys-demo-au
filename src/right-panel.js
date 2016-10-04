@@ -6,7 +6,6 @@ export class RightPanel {
     document.onkeydown = function(evt) {
       evt = evt || window.event;
       var isEscape = false;
-      console.log(evt);
       if ("key" in evt) {
           isEscape = (evt.key == "Escape" || evt.key == "Esc");
       } else {
@@ -41,11 +40,7 @@ export class RightPanel {
       $("#lineId").val("");
     }
 
-    var request = new stopMonitoringRequest;
-    request.siriVersionAPI = $("#siri-server-value").attr(
-        'data-version');
-    request.requestorRef = $("#siri-server-value").attr(
-        'data-requestor');
+    var request = this.getRequestForProfile();
     var xmlRequest = request
         .getStopMonitoring('#stop-monitoring-form');
     var responseCard = new stopMonitoringCard;
@@ -73,10 +68,7 @@ export class RightPanel {
 
     $("#response > .panel, #fancy-response .fancy-stop-wrapper")
         .remove()
-    var request = new stopMonitoringRequest;
-    var node = $("#siri-server-value");
-    request.siriVersionAPI = node.attr('data-version');
-    request.requestorRef = node.attr('data-requestor');
+    var request = this.getRequestForProfile();
     var responseCard = new stopMonitoringCard;
     var generalMessageRequest = request
         .getGeneralMessage('#canned-requests');
@@ -89,11 +81,7 @@ export class RightPanel {
     localStorage.setItem('currentPanel', '#service-discovery-form-wrapper');
     $("#response > .panel, #fancy-response .fancy-stop-wrapper")
         .remove()
-    var request = new stopMonitoringRequest;
-    request.siriVersionAPI = $("#siri-server-value").attr(
-        'data-version');
-    request.requestorRef = $("#siri-server-value").attr(
-        'data-requestor');
+    var request = this.getRequestForProfile();
     var responseCard = new stopMonitoringCard;
     var stopDscRequest = request.getStopDiscovery();
     request.sendRequest(stopDscRequest,
@@ -105,11 +93,7 @@ export class RightPanel {
     localStorage.setItem('currentPanel', '#service-discovery-form-wrapper');
     $("#response > .panel, #fancy-response > fancy-stop-wrapper")
         .remove()
-    var request = new stopMonitoringRequest;
-    request.siriVersionAPI = $("#siri-server-value").attr(
-        'data-version');
-    request.requestorRef = $("#siri-server-value").attr(
-        'data-requestor');
+    var request = this.getRequestForProfile();
     var responseCard = new stopMonitoringCard;
     var lineDscRequest = request.getLineDiscovery();
     request.sendRequest(lineDscRequest,
@@ -120,14 +104,18 @@ export class RightPanel {
   checkStatus() {
     localStorage.setItem('currentPanel', '#check-status-form-wrapper');
     $("#response > .panel, #fancy-response .fancy-stop-wrapper").remove();
-    var request = new stopMonitoringRequest;
-    request.siriVersionAPI = $("#siri-server-value").attr('data-version');
-    request.requestorRef = $("#siri-server-value").attr('data-requestor');
+    var request = this.getRequestForProfile();
     var responseCard = new stopMonitoringCard;
     var checkStatusRequest = request.getCheckStatus();
     request.sendRequest(checkStatusRequest,
         request.handleCheckStatusResponse, responseCard,
         $('#check-status-form-wrapper'));
+  }
+
+  xmlFormWrapper() {
+    localStorage.setItem('currentPanel', '#stop-monitoring-form-wrapper');
+    $('#stop-monitoring-form-wrapper').removeClass('i-m-there');
+    $('#stop-monitoring-xml-form-wrapper').addClass('i-m-there');
   }
 
   smartRequest() {
@@ -155,12 +143,38 @@ export class RightPanel {
     this.superToggle();
   }
 
-  superToggle(el) {
+  superToggle() {
     var target = localStorage.getItem('currentPanel');
     if ($(target).hasClass('i-m-there')) {
       $(target).removeClass('i-m-there');
     }  else {
       $(target).addClass('i-m-there');
     }
+  }
+
+  resetStopId(event) {
+    var parent = $(event.target).closest('form');
+    parent.find('#stopId').val('');
+    parent.find('#stopName').val('');
+  }
+
+  resetDestinationId(event) {
+    var parent = $(event.target).parentsUntil('form')
+    parent.find('#destinationId').val('');
+    parent.find('#destinationName').val('');
+  }
+
+  resetLineId(event) {
+    var parent = $(event.target).parentsUntil('form')
+    parent.find('#lineId').val('');
+    parent.find('#lineName').val('');
+  }
+
+  getRequestForProfile() {
+    var request = new stopMonitoringRequest;
+    var siri_profile = JSON.parse(localStorage.getItem('siri-' + localStorage.getItem('siri-profile')));
+    request.siriVersionAPI = siri_profile.version;
+    request.requestorRef = siri_profile.requestor;
+    return request;
   }
 }

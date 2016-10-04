@@ -9,10 +9,12 @@
 
   <loading-indicator loading.bind="router.isNavigating"></loading-indicator>
   <div class="page-wrapper">
+    <p class="id-description">
+      Le site est un démonstrateur de SIRI : la norme de données transport en commun pour les échanges temps réel.
+    </p>
     <div class="page-content">
       <div class="container" id="explaination-texts">
         <router-view></router-view>
-        <!-- Add services here -->
       </div>
       <right-panel></right-panel>
     </div>

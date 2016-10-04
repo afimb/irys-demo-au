@@ -3,12 +3,12 @@
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse">
-          <span class="sr-only">Toggle Navigation</span>
+          <span class="sr-only">Afficher la navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
           <i class="fa fa-home"></i>
           <span>${router.title}</span>
         </a>
@@ -26,8 +26,8 @@
             <form id="form-siri-profile">
               <label for="siri-profile">SIRI Profile</label>
               <select id="siri-profile" value.bind="siriProfile">
-                <option data-version="1.3" data-requestor="Siri-client" data-value="http://appli.chouette.mobi/siri/irys_server">2.2</option>
-                <option id="siri-server-value" data-version="2.0:FR-IDF-2.4" data-requestor="NINOXE:default" data-value="http://appli.chouette.mobi/siri_france/siri">2.4</option>
+                <option value="2.2">2.2</option>
+                <option value="2.4">2.4</option>
               </select>
             </form>
           </li>
@@ -41,7 +41,4 @@
       </div>
     </div>
   </nav>
-  <p class="id-description">
-    Le site est un démonstrateur de SIRI : la norme de données transport en commun pour les échanges temps réel.
-  </p>
 </template>
