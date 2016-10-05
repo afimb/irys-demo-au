@@ -10,7 +10,7 @@ export class Tools {
 
   static autoComplete() {
     var request = new stopMonitoringRequest;
-    var siri_profile = JSON.parse(localStorage.getItem('siri-' + localStorage.getItem('siri-profile')));
+    var siri_profile = JSON.parse(localStorage.getItem(localStorage.getItem('siri-profile')));
     request.siriVersionAPI = siri_profile.version;
     request.requestorRef = siri_profile.requestor;
     var response = new stopDiscoveryResponse;

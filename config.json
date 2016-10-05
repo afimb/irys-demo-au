@@ -10,6 +10,11 @@
       "version": "2.0:FR-IDF-2.4",
       "requestor": "NINOXE:default",
       "value": "http://appli.chouette.mobi/siri_france/siri"
+    },{
+      "id": "siri-lite",
+      "version": "2.0.0",
+      "requestor": "NINOXE:default",
+      "value": "http://appli.chouette.mobi/siri_lite/siri"
     }
   ]
 }

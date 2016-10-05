@@ -5,9 +5,12 @@ export class NavBar {
   @observable siriProfile = window.localStorage.getItem('siri-profile');
   @bindable router = null;
 
+  attached() {
+    this.siriServers = JSON.parse(localStorage.getItem('siri-servers'));
+  }
 
   siriProfileChanged(newVal) {
-    if(newVal == '2.2') {
+    if(newVal == 'siri-2.2') {
       $(".siri_24").hide();
     } else {
       $(".siri_24").show();

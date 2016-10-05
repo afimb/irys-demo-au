@@ -2,14 +2,19 @@ import {HttpClient, json} from 'aurelia-fetch-client';
 
 export class App {
   activate() {
-    let client = new HttpClient();
-    var json_file = '/config.json';
-    client.fetch(json_file)
+    const client = new HttpClient();
+    const jsonFile = '/config.json';
+    let listServer = new Array();
+    client.fetch(jsonFile)
       .then(response => response.json())
       .then(data => {
         for (const elem of data.servers) {
           localStorage.setItem(elem.id, JSON.stringify(elem));
+          listServer.push(elem.id);
         }
+      })
+      .then(servers => {
+        localStorage.setItem('siri-servers', JSON.stringify(listServer));
       });
   }
 

@@ -55,6 +55,10 @@ button.badge {
     color: #fff;
   }
 }
+.nav > li > a {
+  padding-right: 13px;
+  padding-left: 13px;
+}
 .page-wrapper {
   margin-top: 52px;
   background: url('/images/tramway_white.jpg') no-repeat center top/cover transparent;

@@ -26,8 +26,7 @@
             <form id="form-siri-profile">
               <label for="siri-profile">SIRI Profile</label>
               <select id="siri-profile" value.bind="siriProfile">
-                <option value="2.2">2.2</option>
-                <option value="2.4">2.4</option>
+                <option repeat.for="server of siriServers" value="${server}">${server}</option>
               </select>
             </form>
           </li>

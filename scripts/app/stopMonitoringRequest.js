@@ -213,8 +213,11 @@
       var serviceOk;
       serviceOk = "<div class='alert alert-success' role='alert'><a href='#'' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Service OK</div>";
       stopMonitoringCard.prototype.toggleClassicThings(responseWrapper);
-      $('#check-status-response-wrapper').append(serviceOk).fadeOut(5000);
-      return stopMonitoringRequest.prototype.renderXML(xmlResponse[0]);
+      $('#check-status-response-wrapper').html(serviceOk);
+      if (xmlResponse)
+        return stopMonitoringRequest.prototype.renderXML(xmlResponse[0]);
+      else
+        return true;
     };
 
     stopMonitoringRequest.prototype.handleStopDiscoveryResponseDisplay = function(xmlResponse, handler, responseWrapper) {
@@ -319,35 +322,54 @@
 
     stopMonitoringRequest.prototype.sendRequest = function(xmlRequest, responseHandler, handler, responseWrapper) {
       var errorHandler, serverUrl;
-      var siri_profile = JSON.parse(localStorage.getItem('siri-' + localStorage.getItem('siri-profile')));
+      var siri_profile = JSON.parse(localStorage.getItem(localStorage.getItem('siri-profile')));
       var serverUrl = siri_profile.value;
+      if(siri_profile.id == 'siri-lite') {
+        serverUrl += '/' + siri_profile.version + '/general-message.json?RequestorRef=' + siri_profile.requestor;
+      }
       if (responseWrapper) {
         errorHandler = responseWrapper.find('.alert-wrapper');
         errorHandler.empty();
       }
+      if(siri_profile.id == 'siri-lite') {
+        var method = 'GET';
+        xmlRequest = '';
+        contentType = 'application/json';
+        dataType = 'json';
+      } else {
+        var method = 'POST';
+        contentType = 'text/xml';
+        dataType = 'xml';
+      }
       $.ajax({
-        method: 'POST',
+        method: method,
         url: serverUrl,
         context: document.body,
         crossDomain: true,
-        contentType: 'text/xml',
-        dataType: 'xml',
+        contentType: contentType,
+        dataType: dataType,
         headers: {
           'version': '1.0',
           'encoding': 'UTF-8',
           'standalone': 'no'
         },
         data: xmlRequest
-      }).done(function(response) {
-        var errorSpan, errorText, isError, xmlDoc;
-        xmlDoc = $(response);
-        isError = xmlDoc.find('ErrorText');
-        if (isError.length > 0) {
-          errorText = isError[0].innerHTML;
-          errorSpan = "<div class='alert alert-danger' role='alert'><a href='#'' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + errorText + "</div>";
-          errorHandler.append(errorSpan).fadeOut(5000);
+      }).done(function(data, textStatus, jqXHR) {
+        if(siri_profile.id == 'siri-lite') {
+          if (jqXHR.status == 200)
+            responseHandler(xmlDoc, handler, responseWrapper);
         } else {
-          responseHandler(xmlDoc, handler, responseWrapper);
+          var errorSpan, errorText, isError, xmlDoc;
+          xmlDoc = $(data);
+          isError = xmlDoc.find('ErrorText');
+          if (isError.length > 0) {
+            // TODO - To be fixed
+            errorText = isError[0].innerHTML;
+            errorSpan = "<div class='alert alert-danger' role='alert'><a href='#'' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + errorText + "</div>";
+            errorHandler.html(errorSpan);
+          } else {
+            responseHandler(xmlDoc, handler, responseWrapper);
+          }
         }
       }).fail(function() {
         return console.log('epic fail');
