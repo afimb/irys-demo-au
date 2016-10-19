@@ -4,7 +4,8 @@
   "platform": {
     "id": "web",
     "displayName": "Web",
-    "output": "scripts"
+    "output": "scripts",
+    "index": "index.html"
   },
   "transpiler": {
     "id": "babel",
@@ -30,8 +31,8 @@
     "source": "src/**/*.scss"
   },
   "editor": {
-    "id": "sublime",
-    "displayName": "Sublime"
+    "id": "vscode",
+    "displayName": "Visual Studio Code"
   },
   "unitTestRunner": {
     "id": "karma",
@@ -55,7 +56,8 @@
       {
         "id": "web",
         "displayName": "Web",
-        "output": "scripts"
+        "output": "scripts",
+        "index": "index.html"
       }
     ],
     "loader": {
@@ -151,3 +153,4 @@
     ]
   }
 }
+
