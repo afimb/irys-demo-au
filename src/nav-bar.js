@@ -15,6 +15,7 @@ export class NavBar {
     } else {
       $(".siri_24").show();
     }
+    localStorage.setItem('autoCompleteAlready', false);
     window.localStorage.setItem('siri-profile', newVal);
   }
 

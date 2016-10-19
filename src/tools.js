@@ -14,8 +14,8 @@ export class Tools {
     request.siriVersionAPI = siri_profile.version;
     request.requestorRef = siri_profile.requestor;
     var response = new stopDiscoveryResponse;
-    request.sendRequest(request.getStopDiscovery(), request.handleStopDiscoveryResponse, response);
-    request.sendRequest(request.getLineDiscovery(), request.handleLineDiscoveryResponse, response);
+    request.sendRequest(request.getStopDiscovery(), request.handleStopDiscoveryResponse, response, null, 'stoppoints-discovery');
+    request.sendRequest(request.getLineDiscovery(), request.handleLineDiscoveryResponse, response, null, 'lines-discovery');
     localStorage.setItem('autoCompleteAlready', true);
   }
 }

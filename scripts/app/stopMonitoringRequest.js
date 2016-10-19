@@ -175,47 +175,60 @@
       return stopMonitoringCard.prototype.toggleFancyThings(responseWrapper);
     };
 
-    stopMonitoringRequest.prototype.handleStopDiscoveryResponse = function(xmlResponse, handler, responseWrapper) {
+    stopMonitoringRequest.prototype.handleStopDiscoveryResponse = function(xmlOrJsonResponse, handler, responseWrapper) {
       var array, item, nodes;
-      array = xmlResponse.find('*');
-      nodes = (function() {
-        var i, len, results;
-        results = [];
-        for (i = 0, len = array.length; i < len; i++) {
-          item = array[i];
-          if (item.localName === 'AnnotatedStopPointRef') {
-            results.push(item);
-          }
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        nodes = [];
+        for (const item of xmlOrJsonResponse[0].Siri.StopPointsDelivery.AnnotatedStopPointRef) {
+          console.log(item);
+          nodes.push(item);
         }
-        return results;
-      })();
-      return handler.buildAutocompleteArray(nodes, "Stop");
+      } else {
+        array = xmlOrJsonResponse.find('*');
+        nodes = (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = array.length; i < len; i++) {
+            item = array[i];
+            if (item.localName === 'AnnotatedStopPointRef') {
+              results.push(item);
+              console.log(item);
+            }
+          }
+          return results;
+        })();
+      }
+      return nodes ? handler.buildAutocompleteArray(nodes, "Stop") : false;
     };
 
-    stopMonitoringRequest.prototype.handleLineDiscoveryResponse = function(xmlResponse, handler, responseWrapper) {
+    stopMonitoringRequest.prototype.handleLineDiscoveryResponse = function(xmlOrJsonResponse, handler, responseWrapper) {
       var array, item, nodes;
-      array = xmlResponse.find('*');
-      nodes = (function() {
-        var i, len, results;
-        results = [];
-        for (i = 0, len = array.length; i < len; i++) {
-          item = array[i];
-          if (item.localName === 'AnnotatedLineRef') {
-            results.push(item);
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+
+      } else {
+        array = xmlOrJsonResponse.find('*');
+        nodes = (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = array.length; i < len; i++) {
+            item = array[i];
+            if (item.localName === 'AnnotatedLineRef') {
+              results.push(item);
+            }
           }
-        }
-        return results;
-      })();
-      return handler.buildAutocompleteArray(nodes, "Line");
+          return results;
+        })();
+      }
+      return nodes ? handler.buildAutocompleteArray(nodes, "Line") : false;
     };
 
-    stopMonitoringRequest.prototype.handleCheckStatusResponse = function(xmlResponse, handler, responseWrapper) {
+    stopMonitoringRequest.prototype.handleCheckStatusResponse = function(xmlOrJsonResponse, handler, responseWrapper) {
       var serviceOk;
       serviceOk = "<div class='alert alert-success' role='alert'><a href='#'' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Service OK</div>";
       stopMonitoringCard.prototype.toggleClassicThings(responseWrapper);
       $('#check-status-response-wrapper').html(serviceOk);
-      if (xmlResponse)
-        return stopMonitoringRequest.prototype.renderXML(xmlResponse[0]);
+      if (xmlOrJsonResponse)
+        return stopMonitoringRequest.prototype.renderXML(xmlOrJsonResponse[0]);
       else
         return true;
     };
@@ -320,12 +333,12 @@
       }
     };
 
-    stopMonitoringRequest.prototype.sendRequest = function(xmlRequest, responseHandler, handler, responseWrapper) {
+    stopMonitoringRequest.prototype.sendRequest = function(xmlRequest, responseHandler, handler, responseWrapper, discovery='general-message') {
       var errorHandler, serverUrl;
       var siri_profile = JSON.parse(localStorage.getItem(localStorage.getItem('siri-profile')));
       var serverUrl = siri_profile.value;
       if(siri_profile.id == 'siri-lite') {
-        serverUrl += '/' + siri_profile.version + '/general-message.json?RequestorRef=' + siri_profile.requestor;
+        serverUrl += '/' + siri_profile.version + '/' + discovery + '.json?RequestorRef=' + siri_profile.requestor;
       }
       if (responseWrapper) {
         errorHandler = responseWrapper.find('.alert-wrapper');
@@ -355,12 +368,12 @@
         },
         data: xmlRequest
       }).done(function(data, textStatus, jqXHR) {
+        var errorSpan, errorText, isError, xmlDoc;
+        xmlDoc = $(data);
         if(siri_profile.id == 'siri-lite') {
           if (jqXHR.status == 200)
             responseHandler(xmlDoc, handler, responseWrapper);
         } else {
-          var errorSpan, errorText, isError, xmlDoc;
-          xmlDoc = $(data);
           isError = xmlDoc.find('ErrorText');
           if (isError.length > 0) {
             // TODO - To be fixed

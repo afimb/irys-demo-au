@@ -15,4 +15,4 @@ npm install
 `au run`
 
 ### Building the aurelia app
-`au build`
+`au build --env prod`
