@@ -44,7 +44,6 @@ export class RightPanel {
     var xmlRequest = request
         .getStopMonitoring('#stop-monitoring-form');
     var responseCard = new stopMonitoringCard;
-    console.log(xmlRequest)
     request.sendRequest(xmlRequest,
         request.handleStopMonitoringResponse, responseCard,
         $('#stop-monitoring-form-wrapper'));

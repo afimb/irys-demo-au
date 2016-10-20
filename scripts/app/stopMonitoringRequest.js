@@ -180,7 +180,6 @@
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
         nodes = [];
         for (const item of xmlOrJsonResponse[0].Siri.StopPointsDelivery.AnnotatedStopPointRef) {
-          console.log(item);
           nodes.push(item);
         }
       } else {
@@ -192,7 +191,6 @@
             item = array[i];
             if (item.localName === 'AnnotatedStopPointRef') {
               results.push(item);
-              console.log(item);
             }
           }
           return results;
@@ -310,11 +308,15 @@
     };
 
     stopMonitoringRequest.prototype.renderXML = function(response) {
-      var xmlText;
-      xmlText = new XMLSerializer().serializeToString(response);
-      return $('#xml-response-wrapper').val(this.formatXml(xmlText));
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        return $('#xml-response-wrapper').val(JSON.stringify(response, null, 2));
+      } else {
+        var xmlText;
+        xmlText = new XMLSerializer().serializeToString(response);
+        return $('#xml-response-wrapper').val(this.formatXml(xmlText));
+      }
     };
-
+    
     stopMonitoringRequest.prototype.renderNodesLength = function(l) {
       var el, i, len, ref;
       ref = $('.response-counter');

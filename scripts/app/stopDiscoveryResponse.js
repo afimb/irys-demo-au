@@ -16,8 +16,19 @@
       this.autocomplete = [];
       for (i = 0, len = nodes.length; i < len; i++) {
         node = nodes[i];
-        ref = node.getElementsByTagNameNS('http://www.siri.org.uk/siri', this.typeRef(type))[0].innerHTML;
-        name = node.getElementsByTagNameNS('http://www.siri.org.uk/siri', type + 'Name')[0].innerHTML;
+        if(localStorage.getItem('siri-profile') == 'siri-lite') {
+          console.log(type);
+          if(type == 'Stop') {
+            ref = node.StopPointRef;
+            name = node.StopName[0].value;
+          } else {
+            console.log('lkdflkjhdlkfgjlkdjfg');
+            console.log(node);
+          }
+        } else {
+          ref = node.getElementsByTagNameNS('http://www.siri.org.uk/siri', this.typeRef(type))[0].innerHTML;
+          name = node.getElementsByTagNameNS('http://www.siri.org.uk/siri', type + 'Name')[0].innerHTML;
+        }
         this.autocomplete.push({
           id: ref,
           label: name + ' ' + ref

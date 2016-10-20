@@ -9,7 +9,7 @@
         <div class="right-app-panel">
           <div class="backlinking">
             <div class="pull-right">
-              <button class="btn btn-default btn-xs" click.delegate="xmlFormWrapper()">Requête XML</button>
+              <button class="btn btn-default btn-xs" click.delegate="xmlFormWrapper()">Requête XML/JSON</button>
             </div>
           </div>
 
@@ -196,7 +196,7 @@
          </div>
          <form class="form-horizontal xml-validation-form"
            id="smart-request-form" submit.delegate="smartRequest()">
-           <legend>Requête XML</legend>
+           <legend>Requête XML/JSON</legend>
            <div class="form-group">
              <textarea class="form-control xml-paste-zone"
                id="xml-request-textarea"
@@ -332,7 +332,7 @@
               </div>
 
               <div class="pull-right">
-                <button class="badge badge-white" click.delegate="vueView('xml-')">Vue xml</button>
+                <button class="badge badge-white" click.delegate="vueView('xml-')">Vue xml/json</button>
               </div>
               <div class="pull-right fancy-view">
                 <button class="badge badge-white" click.delegate="vueView('fancy-')">Vue synthetique</button>
@@ -356,7 +356,7 @@
               </button>
             </div>
             <div class="pull-right">
-              <button class="badge badge-white" click.delegate="vueView('xml-')">Vue xml</button>
+              <button class="badge badge-white" click.delegate="vueView('xml-')">Vue xml/json</button>
             </div>
             <div class="pull-right">
               <button class="badge badge-white" click.delegate="vueView('')">Vue complète</button>
