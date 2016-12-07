@@ -17,13 +17,12 @@
       for (i = 0, len = nodes.length; i < len; i++) {
         node = nodes[i];
         if(localStorage.getItem('siri-profile') == 'siri-lite') {
-          console.log(type);
           if(type == 'Stop') {
             ref = node.StopPointRef;
             name = node.StopName[0].value;
           } else {
-            console.log('lkdflkjhdlkfgjlkdjfg');
-            console.log(node);
+            ref = node.LineRef;
+            name = node.LineName[0].value;
           }
         } else {
           ref = node.getElementsByTagNameNS('http://www.siri.org.uk/siri', this.typeRef(type))[0].innerHTML;

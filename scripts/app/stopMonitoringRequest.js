@@ -148,28 +148,37 @@
       return Mustache.render(template, this);
     };
 
-    stopMonitoringRequest.prototype.handleStopMonitoringResponse = function(xmlResponse, handler, responseWrapper) {
+    stopMonitoringRequest.prototype.handleStopMonitoringResponse = function(xmlOrJsonResponse, handler, responseWrapper) {
       var array, i, item, len, node, nodes, siriVersionToDisplay;
-      siriVersionToDisplay = xmlResponse[0].getElementsByTagNameNS('http://www.siri.org.uk/siri', 'StopMonitoringDelivery')[0].getAttribute('version');
-      array = xmlResponse.find('*');
-      nodes = (function() {
-        var i, len, results;
-        results = [];
-        for (i = 0, len = array.length; i < len; i++) {
-          item = array[i];
-          if (item.localName === 'MonitoredStopVisit') {
-            results.push(item);
-          }
+
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        siriVersionToDisplay = JSON.parse(localStorage.getItem('siri-lite')).version
+        nodes = [];
+        for (const item of xmlOrJsonResponse[0].Siri.ServiceDelivery.GeneralMessageDelivery[0].GeneralMessage) {
+          nodes.push(item);
         }
-        return results;
-      })();
+      } else {
+        siriVersionToDisplay = xmlOrJsonResponse[0].getElementsByTagNameNS('http://www.siri.org.uk/siri', 'StopMonitoringDelivery')[0].getAttribute('version');
+        array = xmlOrJsonResponse.find('*');
+        nodes = (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = array.length; i < len; i++) {
+            item = array[i];
+            if (item.localName === 'MonitoredStopVisit') {
+              results.push(item);
+            }
+          }
+          return results;
+        })();
+      }
       for (i = 0, len = nodes.length; i < len; i++) {
         node = nodes[i];
         handler.parseSiriResponse(node);
         handler.buildFancyStopMonitoring();
         handler.buildStopMonitoring();
       }
-      stopMonitoringRequest.prototype.renderXML(xmlResponse[0]);
+      stopMonitoringRequest.prototype.renderXmlOrJson(xmlOrJsonResponse[0]);
       stopMonitoringRequest.prototype.renderNodesLength(nodes.length);
       stopMonitoringRequest.prototype.renderSiriVersion(siriVersionToDisplay);
       return stopMonitoringCard.prototype.toggleFancyThings(responseWrapper);
@@ -202,7 +211,10 @@
     stopMonitoringRequest.prototype.handleLineDiscoveryResponse = function(xmlOrJsonResponse, handler, responseWrapper) {
       var array, item, nodes;
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
-
+        nodes = [];
+        for (const item of xmlOrJsonResponse[0].Siri.LinesDelivery.AnnotatedLineRef) {
+          nodes.push(item);
+        }
       } else {
         array = xmlOrJsonResponse.find('*');
         nodes = (function() {
@@ -226,7 +238,7 @@
       stopMonitoringCard.prototype.toggleClassicThings(responseWrapper);
       $('#check-status-response-wrapper').html(serviceOk);
       if (xmlOrJsonResponse)
-        return stopMonitoringRequest.prototype.renderXML(xmlOrJsonResponse[0]);
+        return stopMonitoringRequest.prototype.renderXmlOrJson(xmlOrJsonResponse[0]);
       else
         return true;
     };
@@ -250,7 +262,7 @@
         handler.buildStopDiscoveryJSON(node);
         handler.buildStopDiscovery();
       }
-      stopMonitoringRequest.prototype.renderXML(xmlResponse[0]);
+      stopMonitoringRequest.prototype.renderXmlOrJson(xmlResponse[0]);
       return stopMonitoringCard.prototype.toggleClassicThings(responseWrapper);
     };
 
@@ -273,24 +285,33 @@
         handler.buildLineDiscoveryJSON(node);
         handler.buildLineDiscovery(nodes, "Line");
       }
-      stopMonitoringRequest.prototype.renderXML(xmlResponse[0]);
+      stopMonitoringRequest.prototype.renderXmlOrJson(xmlResponse[0]);
       return stopMonitoringCard.prototype.toggleClassicThings(responseWrapper);
     };
 
-    stopMonitoringRequest.prototype.handleGeneralMessageResponse = function(xmlResponse, handler, responseWrapper) {
+    stopMonitoringRequest.prototype.handleGeneralMessageResponse = function(xmlOrJsonResponse, handler, responseWrapper) {
       var array, errorSpan, i, item, len, node, nodes;
-      array = xmlResponse.find('*');
-      nodes = (function() {
-        var i, len, results;
-        results = [];
-        for (i = 0, len = array.length; i < len; i++) {
-          item = array[i];
-          if (item.localName === 'GeneralMessage') {
-            results.push(item);
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        nodes = [];
+        if(xmlOrJsonResponse[0].Siri.ServiceDelivery.GeneralMessageDelivery[0].GeneralMessage) {
+          for (const item of xmlOrJsonResponse[0].Siri.ServiceDelivery.GeneralMessageDelivery[0].GeneralMessage) {
+            nodes.push(item);
           }
         }
-        return results;
-      })();
+      } else {
+        array = xmlOrJsonResponse.find('*');
+        nodes = (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = array.length; i < len; i++) {
+            item = array[i];
+            if (item.localName === 'GeneralMessage') {
+              results.push(item);
+            }
+          }
+          return results;
+        })();
+      }
       if (nodes.length > 0) {
         for (i = 0, len = nodes.length; i < len; i++) {
           node = nodes[i];
@@ -299,7 +320,7 @@
           handler.buildFancyGeneralMessage();
           handler.buildGeneralMessage();
         }
-        stopMonitoringRequest.prototype.renderXML(xmlResponse[0]);
+        stopMonitoringRequest.prototype.renderXmlOrJson(xmlOrJsonResponse[0]);
         return stopMonitoringCard.prototype.toggleClassicThings(responseWrapper);
       } else {
         errorSpan = "<div class='alert alert-success' role='alert'><a href='#'' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Pas de message</div>";
@@ -307,7 +328,7 @@
       }
     };
 
-    stopMonitoringRequest.prototype.renderXML = function(response) {
+    stopMonitoringRequest.prototype.renderXmlOrJson = function(response) {
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
         return $('#xml-response-wrapper').val(JSON.stringify(response, null, 2));
       } else {
@@ -378,7 +399,6 @@
         } else {
           isError = xmlDoc.find('ErrorText');
           if (isError.length > 0) {
-            // TODO - To be fixed
             errorText = isError[0].innerHTML;
             errorSpan = "<div class='alert alert-danger' role='alert'><a href='#'' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + errorText + "</div>";
             errorHandler.html(errorSpan);

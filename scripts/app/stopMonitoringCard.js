@@ -53,7 +53,11 @@
     stopMonitoringCard.prototype.parseSiriResponse = function(node) {
       var child, i, len, ref;
       this.stopMonitoredVisit = {};
-      ref = node.children;
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        ref = node;
+      } else {
+        ref = node.children;
+      }
       for (i = 0, len = ref.length; i < len; i++) {
         child = ref[i];
         this.buildResponseJSON(child);
@@ -87,16 +91,34 @@
       }
     };
 
-    stopMonitoringCard.prototype.buildGeneralMessageJSON = function(node) {
-      var child, i, len, ref;
-      if (node.localName === 'Content' || node.localName === 'Message' || node.localName === 'GeneralMessage') {
-        ref = node.children;
-        for (i = 0, len = ref.length; i < len; i++) {
-          child = ref[i];
-          this.buildGeneralMessageJSON(child);
+    stopMonitoringCard.prototype.buildGeneralMessageJSON = function(node, parentKey = '') {
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        if(node instanceof Object) {
+          for (var key in node) {
+            if(node[key] instanceof Object) {
+              this.buildGeneralMessageJSON(node[key], key);
+            } else {
+              // TODO: Look at a better way to fill 'MessageText'
+              if(key == 'value' && parentKey == 'MessageText')
+                this.generalMessage['MessageText'] = node[key];
+              else if(key == 'lang' && parentKey == 'MessageText')
+                this.generalMessage['MessageLang'] = node[key];
+              else
+                this.generalMessage[key] = node[key];
+            }
+          }
         }
-      } else {
-        this.generalMessage[node.localName] = node.innerHTML;
+      } else {
+        var child, i, len, ref;
+        if (node.localName === 'Content' || node.localName === 'Message' || node.localName === 'GeneralMessage') {
+          ref = node.children;
+          for (i = 0, len = ref.length; i < len; i++) {
+            child = ref[i];
+            this.buildGeneralMessageJSON(child);
+          }
+        } else {
+          this.generalMessage[node.localName] = node.innerHTML;
+        }
       }
     };
 
@@ -233,15 +255,17 @@
       var date;
       if (this.AimedArrivalTime !== void 0) {
         date = new Date(this.AimedArrivalTime);
-      } else if (this.monitoredCall.AimedArrivalTime !== void 0) {
+      } else if (this.monitoredCall && this.monitoredCall.AimedArrivalTime !== void 0) {
         date = new Date(this.monitoredCall.AimedArrivalTime);
-      } else {
+      } else if (this.generalMessage) {
         date = new Date(this.generalMessage.ValidUntilTime);
       }
-      if (date.getMinutes() > 9) {
-        return date.getHours() + ":" + date.getMinutes();
-      } else {
-        return date.getHours() + ":0" + date.getMinutes();
+      if(date) {
+        if (date.getMinutes() > 9) {
+          return date.getHours() + ":" + date.getMinutes();
+        } else {
+          return date.getHours() + ":0" + date.getMinutes();
+        }
       }
     };
 
