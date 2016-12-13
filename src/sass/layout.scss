@@ -1,0 +1,68 @@
+.id-description {
+  text-align: center;
+  padding: 4px 0;
+  margin-top: 20px;
+}
+footer {
+  margin-top: 45px;
+  padding: 20px;
+  background-color: #222;
+  color: #777;
+  font-size: 12px;
+  min-height: 200px;
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    list-style: none;
+  }
+  h4 {
+    color: #777;
+  }
+  a {
+    color: #FFF;
+  }
+}
+button.badge {
+  cursor: pointer;
+  border: none;
+}
+.navbar {
+  background-color: #222;
+  min-height: 52px;
+}
+.navbar-default .navbar-nav > li {
+  > a {
+    color: #9d9d9d;
+    &:focus, &:hover, &:active {
+      color: #fff;
+    }
+  }
+  &.active {
+    font-weight: bold;
+  }
+}
+.navbar-default .navbar-brand {
+  color: #fff;
+  &:focus, &:hover, &:active {
+    color: #fff;
+  }
+}
+.navbar-siri-profile > li {
+  padding-top: 15px;
+  #form-siri-profile label {
+    color: #fff;
+  }
+}
+.nav > li > a {
+  padding-right: 13px;
+  padding-left: 13px;
+}
+.page-wrapper {
+  margin-top: 52px;
+  background: url('/images/tramway_white_2.jpg') no-repeat center top transparent;
+}
+
+@import 'main';
+@import 'stop-results';

@@ -1,0 +1,25 @@
+<template>
+  <require from="sass/layout.css"></require>
+  <require from="./nav-bar"></require>
+  <require from="./footer-view"></require>
+  <require from="./modal-data.html"></require>
+  <require from="./right-panel"></require>
+
+  <nav-bar router.bind="router"></nav-bar>
+
+  <loading-indicator loading.bind="router.isNavigating"></loading-indicator>
+  <div class="page-wrapper">
+    <p class="id-description">
+      Le site est un démonstrateur de SIRI : la norme de données transport en commun pour les échanges temps réel.
+    </p>
+    <div class="page-content">
+      <div class="container" id="explaination-texts">
+        <router-view></router-view>
+      </div>
+      <right-panel></right-panel>
+    </div>
+
+    <footer-view></footer-view>
+    <modal-data></modal-data>
+  </div>
+</template>

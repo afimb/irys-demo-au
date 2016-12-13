@@ -1,0 +1,394 @@
+@import 'mixin';
+
+// Helping classes for margins
+.mt-xs{margin-top:5px;}
+.mt-sm{margin-top:10px;}
+.mt-md{margin-top:20px;}
+.mt-lg{margin-top:40px;}
+
+.mb-xs{margin-bottom:5px;}
+.mb-sm{margin-bottom:10px;}
+.mb-md{margin-bottom:20px;}
+.mb-lg{margin-bottom:40px;}
+
+/*-- GO! --*/
+#forms-wrapper,#response-wrapper{
+  >*{
+    display:none;
+    &.i-m-there{display:block;}
+  }
+}
+
+#stop-monitoring-form, #canned-requests, .xml-validation-form {
+  margin-bottom: 10px;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+
+}
+.hero-banner {
+  min-height: 300px;
+  max-height: 50%;
+  width: 100%;
+  position: relative;
+
+  .hero-banner-wrapper {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left:0;
+    right:0;
+    .hero-banner-pic {
+      background: url(../images/tramway.png) no-repeat center 25%;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+    }
+    .hero-banner-hollow {
+      background-color: rgba(120, 120, 120, 0.7);
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+    }
+    .hero-text {
+      position: absolute;
+      top: 100px;
+      margin: auto;
+      max-width: 80%;
+      left: 0;
+      right: 0;
+      color: white;
+      h3 {
+        font-style: normal;
+        font-weight: 200;
+      }
+
+      a{
+        color: dodgerblue;
+        &:hover {
+          color:lightblue;
+        }
+      }
+    }
+    .picture-credit {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      color: white;
+      font-size: 0.85em;
+      padding-right: 10px;
+    }
+  }
+}
+.explaination-text {
+  font-weight: 300;
+  color: grey;
+
+  h2{color:#333;}
+  h5{
+    color:#333;margin:20px 0 10px;padding-bottom:5px;
+    text-transform:uppercase;
+    border-bottom:1px dotted;
+  }
+}
+.page-wrapper {
+  overflow: hidden;
+}
+:app-wrapper {
+  height::100%;
+}
+
+// App Wrapper
+.app-wrapper{position:relative;}
+.open-right-panel {
+  text-align: center;
+}
+// Right Panel
+.page-content{
+  position:relative;
+  white-space:nowrap;
+  .container, right-panel {
+    display:inline-block;
+    vertical-align:top;
+    white-space:normal;
+    &#explaination-texts{width:100%;}
+  }
+  .explaination-text.container {
+    display: block;
+  }
+}
+.right-panel-wrapper {
+  position:relative;
+  margin-left:-15px;
+  @include transition(ease-out 0.25s);
+
+  width:800px;
+
+
+  &.open{margin-left:-800px;}
+}
+#right-panel-wrapper {
+  //overflow:hidden;
+
+  .pannel-trigger{
+    border:none;
+    display:block;
+    position:absolute;left:-19px;top:40px;z-index:6;
+    width:20px;height:80px;
+    background-color:#333;color:#fff;line-height:80px;text-align:center;
+    @include border-radius(4px 0px 0px 4px);
+    -webkit-box-shadow:-1px 0 2px 0 rgba(0,0,0,0.5);
+    box-shadow:-1px 0 2px 0 rgba(0,0,0,0.5);
+    &.open {
+      left: -4px;
+    }
+  }
+
+  .right-app-panel{
+    background-color:#333;color:#fff;
+    @include border-radius(4px 0px 0px 4px);
+    -webkit-box-shadow:-1px 0 4px 0 rgba(0,0,0,0.5);
+    box-shadow:-1px 0 4px 0 rgba(0,0,0,0.5);
+    padding:20px 40px;
+
+    legend{color:#fff;}
+    .form-group p{margin: 5px 0;}
+    .form-group .btn[type='submit']{margin-top:30px;}
+    .form-group textarea{width:calc(100% - 30px);max-width:100%;}
+    .form-group>.text-right{margin:0 15px;}
+
+    #response{
+      .siri-version-display{margin-bottom:20px;}
+      .stop-wrapper{width:auto;max-width:100%;margin-left:0;margin-right:0;}
+    }
+
+    >form{
+      margin-left:0;margin-right:0;max-width:none;
+    }
+
+    .backlinking {
+      height: 20px;
+      margin-bottom:40px;
+
+      a{
+        color:#fff;
+        &:hover,&:focus{text-decoration:none;border-bottom:1px dotted;}
+      }
+      .pull-right+.pull-right{margin-right:10px;}
+    }
+    .badge.badge-white{
+      background-color:#fff;color:#3c3c3c;
+      &:hover,&:focus{border:none;}
+    }
+  }
+  .panel-body {
+    color:#555;
+  }
+}
+
+textarea.xml-paste-zone {
+  height:400px;
+  box-shadow:0 0 5px 0 rgba(0,0,0,0.75) inset;
+  //padding-left:20px;
+  max-width: 600px;
+  margin: auto;
+  border: none;
+  &:focus {
+    border:none;
+    background-color:#f7f7f7;
+    box-shadow:0 0 5px 0 rgba(0,0,0,0.75) inset;
+  }
+}
+#close-slider {
+  position: asolute;
+  top: 5px;
+  left: 5px;
+}
+.slider-action-area {
+  position:relative;
+  height: 100%;
+  text-align:center;
+}
+.afimb-action-man {
+    height:50px;
+    margin:auto;
+  }
+.browsehappy {
+  margin: 0.2em 0;
+  background: #eee;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+  height:60px;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+  .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+  p + h4 {
+    margin-top: 28px;
+  }
+}
+
+// Fancy header
+.fancy-header{
+  border:none;
+  position:relative;z-index:5;
+  background-color: rgba(255,255,255,0.8);
+
+  .container{
+    @include clearfix;padding-top:10px;padding-bottom:10px;
+    height:80px;
+  }
+
+  h3{float:left;margin:0;padding:0;line-height:60px;color:#3c3c3c;}
+
+
+}
+.afimb-action-man{
+
+  a{
+    display:block;
+
+    .afimb-logo {
+      height:60px;width:auto;
+    }
+  }
+}
+.notice-wrapper {
+  position:relative;z-index:10;
+  width:100%;height:30px;
+  background-color: dodgerblue;color: #fff;
+  -webkit-box-shadow:0 0 3px 0 rgba(0,0,0,0.75);
+  box-shadow:0 0 3px 0 rgba(0,0,0,0.75);
+  padding-top:4px;
+
+  a{color:inherit;border-bottom:1px dotted;}
+}
+// Fancy Navbar
+.fancy-navbar{
+  border:none;@include border-radius(0);
+
+  .dropdown-menu{
+    border:none;@include border-radius(0);padding:0;
+
+    >li>a{padding:10px 20px;}
+  }
+}
+// Inverted dropdown
+.dropdown-inverse>.dropdown-menu{
+  background-color:#222;
+
+  >li>a{
+    color:#9d9d9d;
+
+    &:hover{background-color:#090909;color:#fff;}
+  }
+}
+
+// Todolist (panel body dl)
+.panel-info{
+  .panel-heading{
+    padding:15px;
+    .panel-title{font-size:20px;}
+  }
+  dl.panel-body{
+    padding:0;margin:0;
+    // Fix for dib white-spaces...
+    letter-spacing:-0.31em;text-rendering:optimizespeed;
+
+    dt,dd{
+      position:relative;
+      display:inline-block;vertical-align:top;padding:10px 15px;
+      //
+      letter-spacing:normal;text-rendering:auto;
+      border-top:1px solid #bce8f1;
+    }
+    dt:first-child,dt:first-child+dd{border-top:none;}
+
+    dt{
+      width:25%;background-color:lighten(#bce8f1,14%);color:#31708f;
+      font-weight:normal;text-transform:uppercase;font-size:0.85em;line-height:20px;
+
+      &:before{
+        content:'';display:block;width:0;height:0;
+        position:absolute;right:-20px;top:0;bottom:0;z-index:1;
+        border-left:20px solid lighten(#bce8f1,14%);
+        border-top:20px solid transparent;
+        border-bottom:20px solid transparent;
+      }
+      &:after{
+        content:'';display:block;width:0;height:0;
+        position:absolute;right:-20.5px;top:0;bottom:0;z-index:0;
+        border-left:20px solid #bce8f1;
+        border-top:20px solid transparent;
+        border-bottom:20px solid transparent;
+      }
+    }
+    dd{width:75%;padding-left:30px;}
+  }
+}
+.request-form-opener {
+  font-size: 1.25em
+
+}
+#footer {
+  margin-top: 45px;
+  padding: 20px;
+  background-color: #222222;
+  color: #777777;
+  font-size: 12px;
+  min-height: 200px;
+  ul {
+    list-style-type: none;
+  }
+  a {
+    color:#fefefe;
+  }
+}
