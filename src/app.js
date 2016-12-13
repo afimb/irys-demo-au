@@ -3,7 +3,7 @@ import {HttpClient, json} from 'aurelia-fetch-client';
 export class App {
   activate() {
     const client = new HttpClient();
-    const jsonFile = '/config.json';
+    const jsonFile = '../config.json';
     let listServer = new Array();
     client.fetch(jsonFile)
       .then(response => response.json())
@@ -32,7 +32,7 @@ export class App {
   configureRouter(config, router) {
     config.title = 'Irys - Démonstrateur';
     config.options.pushState = true;
-    config.options.root = '/';
+    config.options.root = process.env.url_root_path;
     config.map([
       { route: ['', 'home'], name: 'home',  moduleId: './home',  nav: true, title: 'Accueil' },
       { route: 'stop-monitoring', name: 'stopMonitoring', moduleId: './services/stop-monitoring', nav: true, title: 'Service Stop Monitoring' },

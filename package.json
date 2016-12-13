@@ -1,7 +1,7 @@
 {
   "name": "irys-demo-au",
   "description": "Démonstrateur SIRI",
-  "version": "0.1",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/afimb/irys-demo-au"
@@ -43,6 +43,7 @@
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^2.0.0-alpha",
     "jasmine-core": "^2.4.1",
