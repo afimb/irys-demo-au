@@ -1,4 +1,5 @@
 import gulp from 'gulp';
+import replace from 'gulp-replace';
 import changedInPlace from 'gulp-changed-in-place';
 import plumber from 'gulp-plumber';
 import babel from 'gulp-babel';
@@ -13,6 +14,7 @@ function configureEnvironment() {
 
   return gulp.src(`aurelia_project/environments/${env}.js`)
     .pipe(changedInPlace({firstPass: true}))
+    .pipe(replace('${urlRootPath}', process.env.url_root_path || '/'))
     .pipe(rename('environment.js'))
     .pipe(gulp.dest(project.paths.root));
 }
