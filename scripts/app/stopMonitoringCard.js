@@ -69,7 +69,7 @@
         if (parentKey == 'MonitoredCall') {
           this.monitoredCall = {};
           this.addMonitoredCall(node);
-        } else if (parentKey == 'OnwardCalls') {
+        } else if (parentKey == 'OnwardCalls') {
           this.addOnward = {};
           this.addOnwards(node, '');
         } else {
@@ -132,7 +132,7 @@
             }
           }
         }
-      } else {
+      } else {
         var child, i, len, ref;
         if (node.localName === 'Content' || node.localName === 'Message' || node.localName === 'GeneralMessage') {
           ref = node.children;

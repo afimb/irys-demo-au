@@ -7,6 +7,11 @@
     "output": "scripts",
     "index": "index.html"
   },
+  "replaceTask": {
+    "id": "replace",
+    "displayName": "replace",
+    "source": "index.html.tpl"
+  },
   "transpiler": {
     "id": "babel",
     "displayName": "Babel",
