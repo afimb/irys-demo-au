@@ -1,7 +1,7 @@
 {
   "name": "irys-demo-au",
   "description": "Démonstrateur SIRI",
-  "version": "0.1",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/afimb/irys-demo-au"
