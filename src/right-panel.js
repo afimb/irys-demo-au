@@ -41,12 +41,16 @@ export class RightPanel {
     }
 
     var request = this.getRequestForProfile();
-    var xmlRequest = request
-        .getStopMonitoring('#stop-monitoring-form');
+
+    if(localStorage.getItem('siri-profile') == 'siri-lite') {
+      var xmlRequest = request.prepareUrlFromForm('#stop-monitoring-form');
+    } else {
+      var xmlRequest = request.getStopMonitoring('#stop-monitoring-form');
+    }
     var responseCard = new stopMonitoringCard;
     request.sendRequest(xmlRequest,
         request.handleStopMonitoringResponse, responseCard,
-        $('#stop-monitoring-form-wrapper'));
+        $('#stop-monitoring-form-wrapper'), 'stop-monitoring');
   }
 
   generalMessage() {
@@ -68,12 +72,16 @@ export class RightPanel {
     $("#response > .panel, #fancy-response .fancy-stop-wrapper")
         .remove()
     var request = this.getRequestForProfile();
+
+    if(localStorage.getItem('siri-profile') == 'siri-lite') {
+      var generalMessageRequest = request.prepareUrlFromForm('#canned-requests');
+    } else {
+      var generalMessageRequest = request.getGeneralMessage('#canned-requests');
+    }
     var responseCard = new stopMonitoringCard;
-    var generalMessageRequest = request
-        .getGeneralMessage('#canned-requests');
     request.sendRequest(generalMessageRequest,
         request.handleGeneralMessageResponse, responseCard,
-        $('#get-general-message-form-wrapper'));
+        $('#get-general-message-form-wrapper'), 'general-message');
   }
 
   stopDiscovery() {
@@ -81,11 +89,15 @@ export class RightPanel {
     $("#response > .panel, #fancy-response .fancy-stop-wrapper")
         .remove()
     var request = this.getRequestForProfile();
+
+    var stopDscRequest = null;
+    if(localStorage.getItem('siri-profile') != 'siri-lite') {
+      stopDscRequest = request.getStopDiscovery();
+    }
     var responseCard = new stopMonitoringCard;
-    var stopDscRequest = request.getStopDiscovery();
     request.sendRequest(stopDscRequest,
         request.handleStopDiscoveryResponseDisplay, responseCard,
-        $('#service-discovery-form-wrapper'));
+        $('#service-discovery-form-wrapper'), 'stoppoints-discovery');
   }
 
   lineDiscovery() {
@@ -93,22 +105,29 @@ export class RightPanel {
     $("#response > .panel, #fancy-response > fancy-stop-wrapper")
         .remove()
     var request = this.getRequestForProfile();
+
+    var lineDscRequest = null;
+    if(localStorage.getItem('siri-profile') != 'siri-lite') {
+      lineDscRequest = request.getLineDiscovery();
+    }
     var responseCard = new stopMonitoringCard;
-    var lineDscRequest = request.getLineDiscovery();
     request.sendRequest(lineDscRequest,
         request.handleLineDiscoveryResponseDisplay, responseCard,
-        $('#service-discovery-form-wrapper'));
+        $('#service-discovery-form-wrapper'), 'lines-discovery');
   }
 
   checkStatus() {
     localStorage.setItem('currentPanel', '#check-status-form-wrapper');
     $("#response > .panel, #fancy-response .fancy-stop-wrapper").remove();
     var request = this.getRequestForProfile();
+    var checkStatusRequest = null;
+    if(localStorage.getItem('siri-profile') != 'siri-lite') {
+      checkStatusRequest = request.getCheckStatus();
+    }
     var responseCard = new stopMonitoringCard;
-    var checkStatusRequest = request.getCheckStatus();
     request.sendRequest(checkStatusRequest,
         request.handleCheckStatusResponse, responseCard,
-        $('#check-status-form-wrapper'));
+        $('#check-status-form-wrapper'), 'checkstatus');
   }
 
   xmlFormWrapper() {

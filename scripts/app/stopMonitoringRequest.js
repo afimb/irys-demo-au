@@ -48,6 +48,26 @@
 
     stopMonitoringRequest.prototype.errorResponse = "<div class=\"alert alert-danger\" role=\"alert\">{{errorText}}</div>";
 
+    stopMonitoringRequest.prototype.parseVariables = {
+          'stopId':'MonitoringRef',
+          'lineId': 'LineRef',
+          'destId': 'DestRef',
+          'operatorId': 'OperatorRef',
+          'start': 'StartTime',
+          'preview': 'PreviewInterval',
+          'typeVisit': 'StopVisitTypes',
+          'maxStop': 'MaximumStopVisits',
+          'minStLine': 'MinimumStopVisitsPerLine',
+          'onward': 'MaximumNumberOfCalls',
+          'requestorVersion': 'requestorVersion',
+          'requestorName': 'requestorName',
+          'destinationId': 'DestinationRef',
+          'groupOfLinesRef': 'groupOfLinesRef',
+          'perturbationType': 'InfoChannelRef',
+          'minimumStopVisitPerLineVia': 'MinimumStopVisitsPerLineVia',
+          'destinationId': 'DestinationRef'
+        };
+
     stopMonitoringRequest.prototype.requestDate = function() {
       var offset, requestDate;
       requestDate = new Date;
@@ -84,6 +104,23 @@
       }
       return results;
     };
+
+    stopMonitoringRequest.prototype.prepareUrlFromForm = function(el) {
+      form = $(el);
+      results = [];
+      for (var key in stopMonitoringRequest.prototype.parseVariables) {
+        input = form.find('#' + key);
+        var val = input.val();
+        if (val !== undefined && val.length > 0)
+          this[key] = val;
+          if(key == 'start') {
+            val = stopMonitoringRequest.prototype.startDate();
+          }
+          if (val !== undefined && val.length > 0)
+            results.push(stopMonitoringRequest.prototype.parseVariables[key] + '=' + val);
+      }
+      return results;
+    }
 
     stopMonitoringRequest.prototype.setStart = function() {
       var startHValue, startMValue;
@@ -154,7 +191,7 @@
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
         siriVersionToDisplay = JSON.parse(localStorage.getItem('siri-lite')).version
         nodes = [];
-        for (const item of xmlOrJsonResponse[0].Siri.ServiceDelivery.GeneralMessageDelivery[0].GeneralMessage) {
+        for (const item of xmlOrJsonResponse[0].Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit) {
           nodes.push(item);
         }
       } else {
@@ -362,6 +399,9 @@
       var serverUrl = siri_profile.value;
       if(siri_profile.id == 'siri-lite') {
         serverUrl += '/' + siri_profile.version + '/' + discovery + '.json?RequestorRef=' + siri_profile.requestor;
+        if(xmlRequest && xmlRequest.length > 0) {
+          serverUrl += '&' + xmlRequest.join('&');
+        }
       }
       if (responseWrapper) {
         errorHandler = responseWrapper.find('.alert-wrapper');

@@ -7,9 +7,9 @@
 
       <div id="stop-monitoring-form-wrapper" class="i-m-there">
         <div class="right-app-panel">
-          <div class="backlinking">
+          <div class="backlinking" data-hide-for="siri-lite">
             <div class="pull-right">
-              <button class="btn btn-default btn-xs" click.delegate="xmlFormWrapper()">Requête XML/JSON</button>
+              <button class="btn btn-default btn-xs" click.delegate="xmlFormWrapper()">Requête XML</button>
             </div>
           </div>
 
@@ -196,7 +196,7 @@
          </div>
          <form class="form-horizontal xml-validation-form"
            id="smart-request-form" submit.delegate="smartRequest()">
-           <legend>Requête XML/JSON</legend>
+           <legend>Requête XML</legend>
            <div class="form-group">
              <textarea class="form-control xml-paste-zone"
                id="xml-request-textarea"

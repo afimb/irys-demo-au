@@ -15,6 +15,10 @@ export class NavBar {
     } else {
       $(".siri_24").show();
     }
+    if (newVal == 'siri-lite')
+      $('[data-hide-for="siri-lite"]').hide();
+    else
+      $('[data-hide-for="siri-lite"]').show();
     localStorage.setItem('autoCompleteAlready', false);
     window.localStorage.setItem('siri-profile', newVal);
   }

@@ -51,54 +51,78 @@
     stopMonitoringCard.prototype.lineColors = {};
 
     stopMonitoringCard.prototype.parseSiriResponse = function(node) {
-      var child, i, len, ref;
       this.stopMonitoredVisit = {};
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
-        ref = node;
+        this.buildResponseJSON(node);
       } else {
-        ref = node.children;
-      }
-      for (i = 0, len = ref.length; i < len; i++) {
-        child = ref[i];
-        this.buildResponseJSON(child);
-      }
-    };
-
-    stopMonitoringCard.prototype.buildResponseJSON = function(node) {
-      var child, i, j, l, len, len1, len2, ref, ref1, ref2;
-      if (node.localName === 'FramedVehicleJourneyRef' || node.localName === 'MonitoredVehicleJourney') {
+        var child, i, len, ref;
         ref = node.children;
         for (i = 0, len = ref.length; i < len; i++) {
           child = ref[i];
           this.buildResponseJSON(child);
         }
-      } else if (node.localName === 'MonitoredCall') {
-        this.monitoredCall = {};
-        ref1 = node.children;
-        for (j = 0, len1 = ref1.length; j < len1; j++) {
-          child = ref1[j];
-          this.addMonitoredCall(child);
-        }
-      } else if (node.localName === 'OnwardCalls') {
-        this.onwardsCall = [];
-        ref2 = node.children;
-        for (l = 0, len2 = ref2.length; l < len2; l++) {
-          child = ref2[l];
-          this.addOnwards(child);
-        }
-      } else {
-        this.stopMonitoredVisit[node.localName] = node.innerHTML;
       }
     };
 
-    stopMonitoringCard.prototype.buildGeneralMessageJSON = function(node, parentKey = '') {
+    stopMonitoringCard.prototype.buildResponseJSON = function(node, parentKey = '', parentParentKey = '') {
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        if (parentKey == 'MonitoredCall') {
+          this.monitoredCall = {};
+          this.addMonitoredCall(node);
+        } else if (parentKey == 'OnwardCalls') {
+          this.addOnward = {};
+          this.addOnwards(node, '');
+        } else {
+          for (var key in node) {
+            if(node[key] instanceof Object) {
+              this.buildResponseJSON(node[key], key, parentKey);
+            } else {
+              if(parentKey != '') {
+                this.stopMonitoredVisit[parentKey] = node[key];
+                if(parentParentKey != '') {
+                  this.stopMonitoredVisit[parentParentKey] = node[key];
+                }
+              } else {
+                this.stopMonitoredVisit[key] = node[key];
+              }
+            }
+          }
+        }
+      } else {
+        var child, i, j, l, len, len1, len2, ref, ref1, ref2;
+        if (node.localName === 'FramedVehicleJourneyRef' || node.localName === 'MonitoredVehicleJourney') {
+          ref = node.children;
+          for (i = 0, len = ref.length; i < len; i++) {
+            child = ref[i];
+            this.buildResponseJSON(child);
+          }
+        } else if (node.localName === 'MonitoredCall') {
+          this.monitoredCall = {};
+          ref1 = node.children;
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            child = ref1[j];
+            this.addMonitoredCall(child);
+          }
+        } else if (node.localName === 'OnwardCalls') {
+          this.onwardsCall = [];
+          ref2 = node.children;
+          for (l = 0, len2 = ref2.length; l < len2; l++) {
+            child = ref2[l];
+            this.addOnwards(child, '');
+          }
+        } else {
+          this.stopMonitoredVisit[node.localName] = node.innerHTML;
+        }
+      }
+    };
+
+    stopMonitoringCard.prototype.buildGeneralMessageJSON = function(node, parentKey = '', parentParentKey = '') {
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
         if(node instanceof Object) {
           for (var key in node) {
             if(node[key] instanceof Object) {
               this.buildGeneralMessageJSON(node[key], key);
             } else {
-              // TODO: Look at a better way to fill 'MessageText'
               if(key == 'value' && parentKey == 'MessageText')
                 this.generalMessage['MessageText'] = node[key];
               else if(key == 'lang' && parentKey == 'MessageText')
@@ -186,16 +210,34 @@
       this.onwardsCall.push(onward);
     };
 
-    stopMonitoringCard.prototype.addOnward = function(node, onward) {
-      var child, i, len, ref;
-      if (node.localName === 'ArrivalStopAssignment' || node.localName === 'DepartureStopAssignment') {
-        ref = node.children;
-        for (i = 0, len = ref.length; i < len; i++) {
-          child = ref[i];
-          this.addOnward(child, onward);
+    stopMonitoringCard.prototype.addOnward = function(node, onward, parentParentKey = '') {
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        if(node instanceof Object) {
+          for (var key in node) {
+            if(node[key] instanceof Object) {
+              this.addOnwards(node[key], key, onward);
+            } else if(parentKey != '') {
+              this.addOnward[parentKey] = node[key];
+              if(parentParentKey != '')
+                this.addOnward[parentParentKey] = node[key];
+            } else {
+              this.addOnward[key] = node[key];
+            }
+          }
+        } else {
+          this.addOnward[key] = node[key];
         }
       } else {
-        onward[node.localName] = node.innerHTML;
+        var child, i, len, ref;
+        if (node.localName === 'ArrivalStopAssignment' || node.localName === 'DepartureStopAssignment') {
+          ref = node.children;
+          for (i = 0, len = ref.length; i < len; i++) {
+            child = ref[i];
+            this.addOnward(child, onward);
+          }
+        } else {
+          onward[node.localName] = node.innerHTML;
+        }
       }
     };
 
@@ -211,16 +253,34 @@
       }
     };
 
-    stopMonitoringCard.prototype.addMonitoredCall = function(node) {
-      var child, i, len, ref;
-      if (node.localName === 'ArrivalStopAssignment' || node.localName === 'DepartureStopAssignment') {
-        ref = node.children;
-        for (i = 0, len = ref.length; i < len; i++) {
-          child = ref[i];
-          this.addMonitoredCall(child);
+    stopMonitoringCard.prototype.addMonitoredCall = function(node, parentKey = '', parentParentKey = '') {
+      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+        if(node instanceof Object) {
+          for (var key in node) {
+            if(node[key] instanceof Object) {
+              this.addMonitoredCall(node[key], key, parentKey);
+            } else if(parentKey != '') {
+              this.monitoredCall[parentKey] = node[key];
+              if(parentParentKey != '')
+                this.monitoredCall[parentParentKey] = node[key];
+            } else {
+              this.monitoredCall[key] = node[key];
+            }
+          }
+        } else {
+          this.monitoredCall[key] = node[key];
         }
       } else {
-        this.monitoredCall[node.localName] = node.innerHTML;
+        var child, i, len, ref;
+        if (node.localName === 'ArrivalStopAssignment' || node.localName === 'DepartureStopAssignment') {
+          ref = node.children;
+          for (i = 0, len = ref.length; i < len; i++) {
+            child = ref[i];
+            this.addMonitoredCall(child);
+          }
+        } else {
+          this.monitoredCall[node.localName] = node.innerHTML;
+        }
       }
     };
 

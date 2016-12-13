@@ -22,6 +22,11 @@ export class App {
     if (localStorage.getItem('siri-profile') == null) {
       localStorage.setItem('siri-profile', document.getElementById('siri-profile').value);
     }
+    if (localStorage.getItem('siri-profile') == 'siri-lite') {
+      $('[data-hide-for="siri-lite"]').hide();
+    } else {
+      $('[data-hide-for="siri-lite"]').show();
+    }
   }
 
   configureRouter(config, router) {
