@@ -4,7 +4,7 @@ import {HttpClient, json} from 'aurelia-fetch-client';
 export class App {
   activate() {
     const client = new HttpClient();
-    const jsonFile = '../config.json';
+    const jsonFile = environment.urlRootPath + 'config.json';
     let listServer = new Array();
     client.fetch(jsonFile)
       .then(response => response.json())
