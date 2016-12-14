@@ -4,17 +4,17 @@
       "id": "siri-2.2",
       "version": "1.3",
       "requestor": "Siri-Client",
-      "value": "http://appli.chouette.mobi/siri/irys_server"
+      "value": ""
     },{
       "id": "siri-2.4",
       "version": "2.0:FR-IDF-2.4",
       "requestor": "NINOXE:default",
-      "value": "http://appli.chouette.mobi/siri_france/siri"
+      "value": ""
     },{
       "id": "siri-lite",
       "version": "2.0.0",
       "requestor": "NINOXE:default",
-      "value": "http://appli.chouette.mobi/siri_lite/siri"
+      "value": ""
     }
   ]
 }
