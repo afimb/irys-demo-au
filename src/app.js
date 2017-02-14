@@ -1,29 +1,25 @@
 import environment from './environment';
-import {HttpClient, json} from 'aurelia-fetch-client';
+import configSrv from './config';
 
 export class App {
   activate() {
-    const client = new HttpClient();
-    const jsonFile = environment.urlRootPath + 'config.json';
-    let listServer = new Array();
-    client.fetch(jsonFile)
-      .then(response => response.json())
-      .then(data => {
-        for (const elem of data.servers) {
-          localStorage.setItem(elem.id, JSON.stringify(elem));
-          listServer.push(elem.id);
-        }
-      })
-      .then(servers => {
-        localStorage.setItem('siri-servers', JSON.stringify(listServer));
-      });
+    try {
+      let listServer = [];
+      for (const elem of configSrv.servers) {
+        localStorage.setItem(elem.id, JSON.stringify(elem));
+        listServer.push(elem.id);
+      }
+      localStorage.setItem('siri-servers', JSON.stringify(listServer));
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   attached() {
-    if (localStorage.getItem('siri-profile') == null) {
+    if (localStorage.getItem('siri-profile') === null) {
       localStorage.setItem('siri-profile', document.getElementById('siri-profile').value);
     }
-    if (localStorage.getItem('siri-profile') == 'siri-lite') {
+    if (localStorage.getItem('siri-profile') === 'siri-lite') {
       $('[data-hide-for="siri-lite"]').hide();
     } else {
       $('[data-hide-for="siri-lite"]').show();

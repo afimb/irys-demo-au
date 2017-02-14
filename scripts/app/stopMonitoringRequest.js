@@ -186,14 +186,14 @@
     };
 
     stopMonitoringRequest.prototype.handleStopMonitoringResponse = function(xmlOrJsonResponse, handler, responseWrapper) {
-      var array, i, item, len, node, nodes, siriVersionToDisplay;
+      var array, i, len, node, nodes, siriVersionToDisplay;
 
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
         siriVersionToDisplay = JSON.parse(localStorage.getItem('siri-lite')).version
         nodes = [];
-        for (const item of xmlOrJsonResponse[0].Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit) {
+        xmlOrJsonResponse[0].Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit.forEach(function(item) {
           nodes.push(item);
-        }
+        });
       } else {
         siriVersionToDisplay = xmlOrJsonResponse[0].getElementsByTagNameNS('http://www.siri.org.uk/siri', 'StopMonitoringDelivery')[0].getAttribute('version');
         array = xmlOrJsonResponse.find('*');
@@ -225,9 +225,9 @@
       var array, item, nodes;
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
         nodes = [];
-        for (const item of xmlOrJsonResponse[0].Siri.StopPointsDelivery.AnnotatedStopPointRef) {
+        xmlOrJsonResponse[0].Siri.StopPointsDelivery.AnnotatedStopPointRef.forEach(function(item) {
           nodes.push(item);
-        }
+        });
       } else {
         array = xmlOrJsonResponse.find('*');
         nodes = (function() {
@@ -249,9 +249,9 @@
       var array, item, nodes;
       if(localStorage.getItem('siri-profile') == 'siri-lite') {
         nodes = [];
-        for (const item of xmlOrJsonResponse[0].Siri.LinesDelivery.AnnotatedLineRef) {
+        xmlOrJsonResponse[0].Siri.LinesDelivery.AnnotatedLineRef.forEach(function(item) {
           nodes.push(item);
-        }
+        });
       } else {
         array = xmlOrJsonResponse.find('*');
         nodes = (function() {
@@ -328,12 +328,12 @@
 
     stopMonitoringRequest.prototype.handleGeneralMessageResponse = function(xmlOrJsonResponse, handler, responseWrapper) {
       var array, errorSpan, i, item, len, node, nodes;
-      if(localStorage.getItem('siri-profile') == 'siri-lite') {
+      if (localStorage.getItem('siri-profile') == 'siri-lite') {
         nodes = [];
-        if(xmlOrJsonResponse[0].Siri.ServiceDelivery.GeneralMessageDelivery[0].GeneralMessage) {
-          for (const item of xmlOrJsonResponse[0].Siri.ServiceDelivery.GeneralMessageDelivery[0].GeneralMessage) {
+        if (xmlOrJsonResponse[0].Siri.ServiceDelivery.GeneralMessageDelivery[0].GeneralMessage) {
+          xmlOrJsonResponse[0].Siri.ServiceDelivery.GeneralMessageDelivery[0].GeneralMessage.forEach(function(item) {
             nodes.push(item);
-          }
+          });
         }
       } else {
         array = xmlOrJsonResponse.find('*');
@@ -374,7 +374,7 @@
         return $('#xml-response-wrapper').val(this.formatXml(xmlText));
       }
     };
-    
+
     stopMonitoringRequest.prototype.renderNodesLength = function(l) {
       var el, i, len, ref;
       ref = $('.response-counter');
@@ -446,8 +446,8 @@
             responseHandler(xmlDoc, handler, responseWrapper);
           }
         }
-      }).fail(function() {
-        return console.log('epic fail');
+      }).fail(function(e) {
+        return console.log(e);
       });
     };
 
