@@ -18,5 +18,8 @@ Add all your SIRI servers informations in this file.
 ### Running the aurelia app
 `au run`
 
+### If you need to specify an alias in your URL
+`export url_root_path=/my-alias/`
+
 ### Building the aurelia app
 `au build --env prod`
